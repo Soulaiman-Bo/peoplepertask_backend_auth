@@ -18,7 +18,6 @@
 
     <?php require_once "views/includes/header.php" ?>
 
-
     <section class="flex justify-center m-auto items-center max-w-screen-xl py-32 dark:bg-gray-900">
         <div class="py-8 lg:py-16 px-10 w-[70%] bg-white border rounded-3xl dark: dark:bg-gray-700  ">
             <h2 class=" mb-16 text-5xl tracking-tight  text-center text-gray-900 dark:text-white  font-semibold"> Log <span class="text-orange-500 text-semibold">In</span></h2>

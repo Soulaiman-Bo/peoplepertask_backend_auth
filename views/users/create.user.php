@@ -156,7 +156,7 @@
 
                     <div class="mb-5 w-full">
                         <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                        <select id="role" value="<?php echo $role; ?>" name="role" class="block p-2.5 h-12 pl-5 w-full text-sm text-gray-900 bg-gray-50 rounded-3xl shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <select id="role" value="<?php echo $role; ?>" name="bordered-radio" class="block p-2.5 h-12 pl-5 w-full text-sm text-gray-900 bg-gray-50 rounded-3xl shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option value="admin">Admin</option>
                             <option value="freelancer">Freelancer</option>
                             <option value="customer">Customer</option>

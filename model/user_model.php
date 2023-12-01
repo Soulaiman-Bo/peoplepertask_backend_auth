@@ -153,8 +153,8 @@ function delete($ID)
 }
 
 
-
-function update($ID, $firstname, $lastname, $email, $number, $region, $city, $gender)
+// '$firstname', '$lastname', '$email', '$number', '$role', '$region', '$city', '$gender'
+function update($ID, $firstname, $lastname, $email, $number, $role, $region, $city, $gender)
 {
     // $mysqli = new mysqli("your_host", "your_username", "your_password", "your_database");
     $mysqli = dbConnect();
@@ -163,6 +163,7 @@ function update($ID, $firstname, $lastname, $email, $number, $region, $city, $ge
                 lastname = ? , 
                 email = ? , 
                 number = ? , 
+                role = ? ,
                 region= ?,
                 city = ?,
                 gender = ?
@@ -176,7 +177,7 @@ function update($ID, $firstname, $lastname, $email, $number, $region, $city, $ge
     }
 
     // Bind parameters
-    $stmt->bind_param("ssssiisi", $firstname, $lastname, $email, $number, $region, $city, $gender, $ID);
+    $stmt->bind_param("sssssiisi", $firstname, $lastname, $email, $number, $role, $region, $city, $gender, $ID);
 
     // Execute the update
     $result = $stmt->execute();

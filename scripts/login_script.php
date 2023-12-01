@@ -4,10 +4,13 @@ session_start();
 $email = $_SESSION['email'];
 //$password = $_SESSION['password'];
 
-if($email != false){
-    header('Location: ');
-}
+// if($email != false){
+//     header('Location: ');
+// }
 
+if (isset($_SESSION['role'])) {
+    header('Location:dashboard.php');
+}
 
 
 $firstname = $lastname = $email = $number  = $region = $city = $gender = $password =  $passwordConfirm =  "";

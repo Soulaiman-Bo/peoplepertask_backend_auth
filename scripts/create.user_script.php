@@ -134,10 +134,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    if (empty($_POST["role"])) {
+    if (empty($_POST["bordered-radio"])) {
         $roleErr = "role is required";
     } else {
-        $role = test_input($_POST["role"]);
+        $role = test_input($_POST["bordered-radio"]);
         if ($role != 'admin' && $role != 'customer' && $role != 'freelancer') {
             $roleErr = "Invalid role";
         }
@@ -150,7 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
         create($hashedPassword);
-        header('location:login.php');
+        header('location:users.php');
     }
 }
 

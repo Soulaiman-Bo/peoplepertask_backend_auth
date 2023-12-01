@@ -1,5 +1,10 @@
 <?php
-require_once "scripts/signup_script.php"
+require_once "scripts/signup_script.php";
+session_start();
+if (isset($_SESSION['role'])) {
+    header('Location:dashboard.php');
+}
+
 ?>
 -->
 <!DOCTYPE html>

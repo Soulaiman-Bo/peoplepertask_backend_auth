@@ -1,3 +1,155 @@
+<?php
+
+
+$firstname = $lastname = $email = $number  = $region = $city = $gender = $password =  $passwordConfirm = $role =   "";
+$firstnameErr = $lastnameErr = $emailErr = $numberErr  = $regionErr = $cityErr = $genderErr = $passwordErr = $passwordConfirmErr =  $roleErr =  "";
+
+
+require_once 'model/user_model.php';
+require_once 'model/region_city_model.php';
+
+$id = $_GET['user'];
+$row = getOne($id);
+$allregions = getAllRegions();
+$allcities = getAllCities();
+
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $ID = $row["ID"];
+    $firstname = $row["firstname"];
+    $lastname = $row["lastname"];
+    $email = $row["email"];
+    $number = $row["number"];
+    // $competences = $row["competences"];
+    $region = $row["region"];
+    $city = $row["city"];
+    $gender = $row["gender"];
+    $role = $row["role"];
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validate Firstname
+    $ID = test_input($_POST["ID"]);
+
+    if (empty($_POST["firstname"])) {
+        $firstnameErr = "Firstname is required";
+    } else {
+        $firstname = test_input($_POST["firstname"]);
+        // Check if firstname contains only letters and is within the specified length
+        if (!preg_match("/^[a-zA-Z]{2,20}$/", $firstname)) {
+            $firstnameErr = "Only letters allowed, not more than 20 characters, not less than 2 characters";
+        }
+    }
+
+    // Validate Lastname
+    if (empty($_POST["lastname"])) {
+        $lastnameErr = "Lastname is required";
+    } else {
+        $lastname = test_input($_POST["lastname"]);
+        // Check if lastname contains only letters and is within the specified length
+        if (!preg_match("/^[a-zA-Z]{2,20}$/", $lastname)) {
+            $lastnameErr = "Only letters allowed, not more than 20 characters, not less than 2 characters";
+        }
+    }
+
+    // Validate Email
+    if (empty($_POST["email"])) {
+        $emailErr = "Email is required";
+    } else {
+        $email = test_input($_POST["email"]);
+        // Check if email is valid
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+        }
+    }
+
+    // Validate Phone
+    if (empty($_POST["number"])) {
+        $numberErr = "Phone number is required";
+    } else {
+        $number = test_input($_POST["number"]);
+        // Check if phone is a valid number
+        if (!preg_match("/^[0-9]{10}$/", $number)) {
+            $numberErr = "Invalid phone number";
+        }
+    }
+
+    // Validate Competences
+    // if (empty($_POST["competences"])) {
+    //     $competencesErr = "Competences are required";
+    // } else {
+    //     $competences = test_input($_POST["competences"]);
+    //     // Check if competences contain only letters and are within the specified length
+    //     if (!preg_match("/^[a-zA-Z ,]{2,200}$/", $competences)) {
+    //         $competencesErr = "Only letters allowed, not more than 200 characters, not less than 2 characters";
+    //     }
+    // }
+
+    if (empty($_POST["role"])) {
+        $roleErr = "role is required";
+    } else {
+        $role = test_input($_POST["role"]);
+        
+        if ($role != 'admin' && $role != 'customer' && $role != 'freelancer') {
+            $roleErr = "Invalid role";
+        }
+    }
+
+    // Validate Region
+    if (empty($_POST["region"])) {
+        $regionErr = "Region is required";
+    } else {
+        $region = test_input($_POST["region"]);
+        // Check if region is a number between 1 and 12
+        if (!filter_var($region, FILTER_VALIDATE_INT, array("options" => array("min_range" => 1, "max_range" => 12)))) {
+            $regionErr = "Invalid region number";
+        }
+    }
+
+    // Validate City
+    if (empty($_POST["city"])) {
+        $cityErr = "City is required";
+    } else {
+        $city = test_input($_POST["city"]);
+        // Check if city is a number between 1 and 404
+        if (!filter_var($city, FILTER_VALIDATE_INT, array("options" => array("min_range" => 1, "max_range" => 404)))) {
+            $cityErr = "Invalid city number";
+        }
+    }
+
+    // Validate Gender
+    if (empty($_POST["gender"])) {
+        $genderErr = "Gender is required";
+    } else {
+        $gender = test_input($_POST["gender"]);
+        // Check if gender is either 'Male' or 'Female'
+        if ($gender != 'Male' && $gender != 'Female') {
+            $genderErr = "Invalid gender";
+        }
+    }
+
+
+    if (
+        empty($firstnameErr) && empty($lastnameErr) && empty($emailErr) && empty($numberErr)
+        && empty($roleErr)&& empty($regionErr) && empty($cityErr) && empty($genderErr)
+    ) {
+        update($ID, $firstname, $lastname, $email, $number, $role, $region, $city, $gender);
+        header('location:users.php');
+    }
+}
+
+function test_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+?>
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,7 +240,9 @@
     <main class="mt-14 p-12 ml-0 smXl:ml-64 dark:border-gray-700">
         <div class="h-full">
 
-            <form class="w-3/4 mx-auto bg-white border p-8 rounded-2xl border-b dark:bg-gray-800 dark:border-gray-700">
+            <form action="?action=updateuser" method="POST" class="w-3/4 mx-auto bg-white border p-8 rounded-2xl border-b dark:bg-gray-800 dark:border-gray-700">
+
+                <input type="hidden" value="<?php echo $ID   ?>" name="ID" id="ID" required>
 
                 <div class="flex flex-col xl:flex-row gap-7 mb-4 ">
                     <div class="mb-5 w-full">
@@ -119,12 +273,17 @@
                     </div>
                 </div>
 
+
                 <div class="flex flex-col xl:flex-row gap-7 mb-4">
                     <div class="mb-5 w-full">
                         <label for="region" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select your region</label>
                         <select name="region" value="<?php echo $region; ?>" id="region" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <?php foreach ($allregions as $region) : ?>
-                                <option value="<?= $region['id'] ?>"> <?= $region['region'] ?></option>
+                                <?php if ($region['id'] == $row["region"]) : ?>
+                                    <option selected value="<?= $region['id'] ?>"> <?= $region['region'] ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $region['id'] ?>"> <?= $region['region'] ?></option>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </select>
                         <span class="mt-4 block ml-4 text-xs text-red-600 dark:text-red-400 "> <?php echo $regionErr; ?></span>
@@ -136,6 +295,14 @@
                             <?php foreach ($allcities as $city) : ?>
                                 <option value="<?= $city['id'] ?>"> <?= $city['ville'] ?></option>
                             <?php endforeach; ?>
+
+                            <?php foreach ($allcities as $city) : ?>
+                                <?php if ($city['id'] == $row["city"]) : ?>
+                                    <option selected value="<?= $city['id'] ?>"> <?= $city['ville'] ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $city['id'] ?>"> <?= $city['ville'] ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </select>
                         <span class="mt-4 block ml-4 text-xs text-red-600 dark:text-red-400 "> <?php echo $cityErr; ?></span>
                     </div>
@@ -145,25 +312,26 @@
                     <div class="mb-5 w-full">
                         <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
                         <select id="gender" value="<?php echo $gender; ?>" name="gender" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option>Male</option>
-                            <option>Female</option>
+                            <option  <?php if($gender == 'Male') echo "selected"; ?> value="Male">Male</option>
+                            <option  <?php if($gender == 'Female') echo "selected"; ?> value="Female">Female</option>
                         </select>
                         <span class="mt-4 block ml-4 text-xs text-red-600 dark:text-red-400 "> <?php echo $genderErr; ?></span>
                     </div>
 
                     <div class="mb-5 w-full">
                         <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                        <select id="role" value="<?php echo $role; ?>" name="rolee" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option>Admin</option>
-                            <option>Freelancer</option>
-                            <option>Customer</option>
+                        <select id="role" value="<?php echo $role; ?>" name="role" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                           
+                            <option  <?php if($role == 'admin') echo "selected"; ?> value="admin">Admin</option>
+                            <option  <?php if($role == 'freelancer') echo "selected"; ?> value="freelancer">Freelancer</option>
+                            <option  <?php if($role == 'customer') echo "selected"; ?> value="customer">Customer</option>
                         </select>
                         <span class="mt-4 block ml-4 text-xs text-red-600 dark:text-red-400 "> <?php echo $genderErr; ?></span>
                     </div>
                 </div>
 
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Create User
+                    Update User
                 </button>
             </form>
         </div>
