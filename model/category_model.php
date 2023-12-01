@@ -19,7 +19,7 @@ require_once "config/dbConnect.php";
 
 function createCat()
 {
-  
+
     extract($_POST);
     $conn = dbConnect();
 
@@ -38,34 +38,73 @@ function createCat()
 
 
 
-    
+
     $sql = "INSERT INTO category (category_name, parent_caregory) VALUES ('$name', '$parentcategory')";
     $result = $conn->query($sql);
     $conn->close();
     return  $result;
-
 };
 
+
+// function getAllCatWithParent()
+// {
+//     $conn = dbConnect();
+//     $sql = "SELECT C1.ID As ID,  C2.category_name AS category, C1.category_name AS parentCategory
+//             FROM `category` C2
+//             JOIN `category` C1
+//             ON C1.ID = C2.parent_caregory";
+
+//     $result = $conn->query($sql);
+//     $conn->close();
+//     return  $result;
+
+
+// // SELECT C2.category_name, C1.category_name
+// // FROM `category` C2
+// // JOIN `category` C1
+// // ON C1.ID = C2.parent_caregory;
+
+// };
 
 function getAllCatWithParent()
 {
     $conn = dbConnect();
-    $sql = "SELECT C1.ID As ID,  C2.category_name AS category, C1.category_name AS parentCategory
-            FROM `category` C2
-            JOIN `category` C1
-            ON C1.ID = C2.parent_caregory";
 
-    $result = $conn->query($sql);
+    // Use a prepared statement to prevent SQL injection
+    $sql = "SELECT C2.ID As ID,  C2.category_name AS category, C1.category_name AS parentCategory
+            FROM `category` C1
+            RIGHT JOIN `category` C2
+            ON C1.ID = C2.parent_caregory;";
+
+
+    // SELECT C2.ID As ID,  C2.category_name AS category, C1.category_name AS parentCategory
+    // FROM `category` C1
+    // RIGHT JOIN `category` C2
+    // ON C1.ID = C2.parent_caregory;
+
+    $stmt = $conn->prepare($sql);
+
+    // Check if the prepare statement was successful
+    if ($stmt === false) {
+        die("Error in prepare statement: " . $conn->error);
+    }
+
+    // Execute the query
+    $stmt->execute();
+
+    // Get the result
+    $result = $stmt->get_result();
+
+    // Fetch all rows
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+    // Close the statement and connection
+    $stmt->close();
     $conn->close();
-    return  $result;
 
+    return $rows;
+}
 
-// SELECT C2.category_name, C1.category_name
-// FROM `category` C2
-// JOIN `category` C1
-// ON C1.ID = C2.parent_caregory;
-
-};
 
 function getAllCat()
 {
@@ -74,7 +113,6 @@ function getAllCat()
     $result = $conn->query($sql);
     $conn->close();
     return  $result;
-
 };
 
 function getHomeCat()
@@ -84,7 +122,6 @@ function getHomeCat()
     $result = $conn->query($sql);
     $conn->close();
     return  $result;
-
 };
 
 function getOneCat($id)
@@ -119,7 +156,7 @@ function updateCat($ID, $category_name, $parent_caregory)
         $parentCategoryId = $row['ID'];
     }
 
-    
+
     $sql = " UPDATE category SET category_name = '$category_name', parent_caregory = '$parentCategoryId' WHERE ID = $ID";
     $result = $conn->query($sql);
     $conn->close();
