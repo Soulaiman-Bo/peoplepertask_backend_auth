@@ -54,7 +54,7 @@ function createPR()
 function getAllPR()
 {
     $conn = dbConnect();
-    $sql = "SELECT * FROM project ORDER BY ID ASC";
+    $sql = "SELECT * FROM `projets`;";
     $result = $conn->query($sql);
     $conn->close();
     return  $result;

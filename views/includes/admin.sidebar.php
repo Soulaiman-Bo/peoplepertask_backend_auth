@@ -51,8 +51,8 @@
                     </a>
                 </li> -->
 
-                <!-- <li>
-                    <a href="./index.php?viewofproject=getAllProjects"
+                <li>
+                    <a href="projects.php"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,7 +61,7 @@
 
                         <span class="flex-1 ml-3 whitespace-nowrap font-inter">Projects</span>
                     </a>
-                </li> -->
+                </li>
 
                 <li>
                     <a href="categories.php"
@@ -73,8 +73,6 @@
                             <path d="M17 11.6875C18.1046 11.6875 19 12.5707 19 13.6601V17.0274C19 18.1168 18.1046 19 17 19H14C12.8954 19 12 18.1168 12 17.0274L12 13.6601C12 12.5707 12.8954 11.6875 14 11.6875H17Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M3.00001 11.6875C1.89544 11.6875 1.00001 12.5707 1.00001 13.6601L1.00001 17.0274C1.00001 18.1168 1.89544 19 3.00001 19H6.00001C7.10458 19 8.00001 18.1168 8.00001 17.0274L8.00001 13.6601C8.00001 12.5707 7.10458 11.6875 6.00001 11.6875H3.00001Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-
-
 
                         <span class="flex-1 ml-3 whitespace-nowrap font-inter">Categories</span>
                     </a>
