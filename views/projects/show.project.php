@@ -101,10 +101,10 @@ $allProject = getAllPR();
 
 
                     <div class="flex justify-between">
-                        <p class="text-2xl mb-3 text-orange-600">HTML and CSS Developer</p>
+                        <p class="text-2xl mb-3 text-orange-600"><?= $project['title'] ?></p>
                         <p class="flex gap-6">
-                            <a href="./index.php?viewofproject=updateProject&project=<?= $project['ID'] ?>" class="font-medium font-inter text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            <a href="./index.php?viewofproject=deleteProject&project=<?= $project['ID'] ?>" class="font-medium font-inter text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                            <a href="?action=updateproject&project=<?= $project['ID'] ?>" class="font-medium font-inter text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            <a href="?action=deleteproject&project=<?= $project['ID'] ?>" class="font-medium font-inter text-red-600 dark:text-red-500 hover:underline">Delete</a>
                         </p>
                     </div>
                     <p class="text-orange-900 dark:text-orange-600">

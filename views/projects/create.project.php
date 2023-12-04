@@ -1,6 +1,152 @@
 <?php
-require_once 'model/project_model.php';
-$allProject = getAllPR();
+require_once "model/category_model.php";
+require_once "model/project_model.php";
+
+$allCategories =  getAllCat();
+
+$ID = $title = $description = $minprice = $maxprice = $hours = $duration = $experince = $country = $category = $tags = "";
+$titleErr = $descriptionErr = $minpriceErr = $maxpriceErr = $hoursErr = $durationErr = $experinceErr = $countryErr = $categoryErr = $tagsErr = "";
+
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Validate Title
+    if (empty($_POST["title"])) {
+        $titleErr = "Title is required";
+    } else {
+        $title = test_input($_POST["title"]);
+        // Check if title is within the specified length
+        if (strlen($title) < 10 || strlen($title) > 200) {
+            $titleErr = "Title should be between 10 and 200 characters";
+        }
+    }
+
+    // Validate Description
+    if (empty($_POST["description"])) {
+        $descriptionErr = "Description is required";
+    } else {
+        $description = test_input($_POST["description"]);
+        // Check if description is within the specified length
+        if (strlen($description) < 10 || strlen($description) > 600) {
+            $descriptionErr = "Description should be between 10 and 600 characters";
+        }
+    }
+
+    if (empty($_POST["tags"])) {
+        $tagsErr = "Tags are required";
+    } else {
+        $tags = test_input($_POST["tags"]);
+        // Check if description is within the specified length
+        if (strlen($tags) < 5 || strlen($tags) > 600) {
+            $tagsErr = "Description should be between 5 and 600 characters";
+        }
+    }
+
+    // Validate Min Price
+    if (empty($_POST["minprice"])) {
+        $minpriceErr = "Min Price is required";
+    } else {
+        $minprice = test_input($_POST["minprice"]);
+        // Check if min price is a valid number
+        if (!is_numeric($minprice)) {
+            $minpriceErr = "Min Price should be a valid number";
+        }
+    }
+
+    // Validate Max Price
+    if (empty($_POST["maxprice"])) {
+        $maxpriceErr = "Max Price is required";
+    } else {
+        $maxprice = test_input($_POST["maxprice"]);
+        // Check if max price is a valid number and not less than min price
+        if (!is_numeric($maxprice) || $maxprice < $minprice) {
+            $maxpriceErr = "Max Price should be a valid number and not less than Min Price";
+        }
+    }
+
+    // Validate Hours
+    if (empty($_POST["hours"])) {
+        $hoursErr = "Hours is required";
+    } else {
+        $hours = test_input($_POST["hours"]);
+        // Check if hours is a valid number
+        if (!is_numeric($hours)) {
+            $hoursErr = "Hours should be a valid number";
+        }
+    }
+
+    // Validate Duration
+    if (empty($_POST["duration"])) {
+        $durationErr = "Duration is required";
+    } else {
+        $duration = test_input($_POST["duration"]);
+        // Check if duration is a valid number
+        if (!is_numeric($duration)) {
+            $durationErr = "Duration should be a valid number";
+        }
+    }
+
+    // Validate Experience
+    if (empty($_POST["experince"])) {
+        $experinceErr = "Experience is required";
+    } else {
+        $experince = test_input($_POST["experince"]);
+        // Check if experience is one of the specified values
+        $validExperiences = array('beginner', 'intermediate', 'advanced');
+        if (!in_array($experince, $validExperiences)) {
+            $experienceErr = "Invalid experience level";
+        }
+    }
+
+    // Validate Country
+    if (empty($_POST["country"])) {
+        $countryErr = "Country is required";
+    } else {
+        $country = test_input($_POST["country"]);
+        // Check if country is within the specified length
+        if (strlen($country) < 4 || strlen($country) > 20) {
+            $countryErr = "Country should be between 4 and 20 characters";
+        }
+    }
+
+    // Validate Category
+    if (empty($_POST["category_id"])) {
+        $categoryErr = "Category is required";
+    } else {
+        $category = test_input($_POST["category_id"]);
+        // Add additional validation for category if needed
+    }
+
+
+    if (
+
+        empty($titleErr) &&
+        empty($descriptionErr) &&
+        empty($minpriceErr) &&
+        empty($maxpriceErr) &&
+        empty($hoursErr) &&
+        empty($durationErr) &&
+        empty($experinceErr) &&
+        empty($countryErr) &&
+        empty($categoryErr) &&
+        empty($tagsErr)
+
+    ) {
+        createPR();
+        header('location:projects.php');
+    }
+}
+
+// Function to sanitize input data
+function test_input($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 ?>
 -->
 <!DOCTYPE html>
@@ -119,6 +265,12 @@ $allProject = getAllPR();
                 </div>
 
                 <div class="mb-5">
+                    <label for="tags" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tags</label>
+                    <input type="text" name="tags" value="<?php echo $rags; ?>" id="tags" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="PHP, JAVASCRIPT, CSS, HTML" required>
+                    <span class="mt-4 block ml-4 text-xs text-red-600 dark:text-red-400 "> <?php echo $tagsErr; ?></span>
+                </div>
+
+                <div class="mb-5">
                     <label for="hours" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Hours Per Week</label>
                     <input type="number" name="hours" value="<?php echo $hours; ?>" id="hours" placeholder="30 hour" required class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
                     <span class="mt-4 block ml-4 text-xs text-red-600 dark:text-red-400 "> <?php echo $hoursErr; ?></span>
@@ -153,7 +305,7 @@ $allProject = getAllPR();
 
                 <div class="mb-5">
                     <label for="category_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select your Category</label>
-                    <select name="category_name" value="<?php echo $category_name; ?>" id="category_name" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select name="category_id" value="<?php echo $category_name; ?>" id="category_name" class="  bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
 
                         <?php foreach ($allCategories as $parent) : ?>
                             <option value="<?= $parent['ID'] ?>"><?= $parent['category_name'] ?></option>

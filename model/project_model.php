@@ -30,21 +30,22 @@ function createPR()
     extract($_POST);
     $conn = dbConnect();
 
-    $parentCategoryId;
+    //$parentCategoryId;
 
-    if ($category_name == 'null') {
-        $parentCategoryId = null;
-    } else {
-        $sql = "SELECT ID FROM category WHERE category_name = '$category_name'";
-        $result = $conn->query($sql);
-        $row = $result->fetch_assoc();
-        $parentCategoryId = $row['ID'];
-    }
+    // if ($category_name == 'null') {
+    //     $parentCategoryId = null;
+    // } 
+    // else {
+    //     $sql = "SELECT ID FROM category WHERE category_name = '$category_name'";
+    //     $result = $conn->query($sql);
+    //     $row = $result->fetch_assoc();
+    //     $parentCategoryId = $row['ID'];
+    // }
 
 
 
-    $sql = "INSERT INTO project (title, description, minprice, maxprice, hours, duration, experince, country, category_id) 
-    VALUES ('$title', '$description', '$minprice', '$maxprice', '$hours', '$duration', '$experince', '$country', '$parentCategoryId')";
+    $sql = "INSERT INTO projets (title, description, tags, minprice, maxprice, hours, duration, experince, country, category_id) 
+    VALUES ('$title', '$description',  '$tags', '$minprice', '$maxprice', '$hours', '$duration', '$experince', '$country', '$category_id')";
 
     $result = $conn->query($sql);
     $conn->close();
@@ -63,7 +64,7 @@ function getAllPR()
 function getOnePR($id)
 {
     $conn = dbConnect();
-    $sql = "SELECT * FROM project WHERE ID = $id";
+    $sql = "SELECT * FROM projets WHERE ID = $id";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $conn->close();
@@ -73,40 +74,44 @@ function getOnePR($id)
 function deletePR($ID)
 {
     $conn = dbConnect();
-    $sql = "DELETE FROM project WHERE ID = $ID";
+    $sql = "DELETE FROM projets WHERE ID = $ID";
     $result = $conn->query($sql);
     $conn->close();
     return $result;
 
 };
 
-function updatePR($ID, $title, $description, $minprice, $maxprice, $hours, $duration, $experince, $country, $category)
+function updatePR($ID, $title, $description, $tags, $minprice, $maxprice, $hours, $duration, $experince, $country, $category)
 {
     $conn = dbConnect();
 
-    if ($category == 'null') {
-        $parentCategoryId = null;
-    } else {
-        $sql = "SELECT ID FROM category WHERE category_name = '$category'";
-        $result = $conn->query($sql);
-        $row = $result->fetch_assoc();
-        $parentCategoryId = $row['ID'];
-    }
+    // if ($category == 'null') {
+    //     $parentCategoryId = null;
+    // } else {
+    //     $sql = "SELECT ID FROM category WHERE category_name = '$category'";
+    //     $result = $conn->query($sql);
+    //     $row = $result->fetch_assoc();
+    //     $parentCategoryId = $row['ID'];
+    // }
 
-    
-    $sql = " UPDATE project SET 
+    //die("'$ID', '$title', '$description', '$tags', '$minprice', '$maxprice', '$hours', '$duration', '$experince', '$country', '$category'");
+    $sql = " UPDATE projets SET 
             title = '$title',
             description = '$description',
+            tags = '$tags',
             minprice = '$minprice',
             maxprice = '$maxprice',
             hours = '$hours',
             duration = '$duration',
             experince = '$experince',
             country = '$country',
-            category_id = '$parentCategoryId'
-            WHERE ID = '$ID'";
+            category_id = '$category'
+            WHERE ID = '$ID' ";
 
     $result = $conn->query($sql);
+
     $conn->close();
+
     return  $result;
+
 };
