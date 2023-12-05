@@ -40,13 +40,13 @@ $users =  getHomeUsers();
       <div class="mx-auto lg:mx-auto place-self-center lg:col-span-7 w-auto">
         <h1 class="max-w-2xl mb-4 text-5xl tracking-wider leading-wide md:text-5xl xl:tracking-normal xl:text-8xl xl:leading-wide dark:text-white ">Are you looking for Freelancers ? </h1>
         <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">Hire Great Freelancers, Fast. PeopleForTasks helps you hire elite freelancers at a moment's, or just be onenotice. </p>
-        <a href="../src/marketplace.html" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-3xl bg-primary-600 hover:bg-primary-700 focus:ring-4">
+        <a href="marketplace.php" class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-3xl bg-primary-600 hover:bg-primary-700 focus:ring-4">
           Hire Freelancers
           <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
           </svg>
         </a>
-        <a href="../src/marketplace.html" class="inline-flex items-start justify-center mt-5 px-2 py-3 text-base text-left text-gray-900 border border-gray-300 rounded-3xl hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+        <a href="marketplace.php" class="inline-flex items-start justify-center mt-5 px-2 py-3 text-base text-left text-gray-900 border border-gray-300 rounded-3xl hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
           Look for freelancing jobs
         </a>
       </div>
@@ -129,7 +129,7 @@ $users =  getHomeUsers();
 
         <?php foreach ($results as $card) :  ?>
           <div class="shadow-md hidden sm:block">
-            <a href="../src/marketplace.html" class="block w-full h-50 relative rounded-2xl overflow-hidden">
+            <a href="marketplace.php" class="block w-full h-50 relative rounded-2xl overflow-hidden">
               <img class="w-full h-full" src="public/images/category3.png" alt="Cartoon Animation">
               <div class="absolute inset-0 bg-black bg-opacity-50"></div>
               <div class="absolute inset-0 flex items-center justify-center">

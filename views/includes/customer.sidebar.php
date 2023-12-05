@@ -24,7 +24,7 @@
                     </a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="./index.php?view=getAllUsers"
                         class="flex items-center p-2 text-white rounded-lg bg-orange-600 dark:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
@@ -37,9 +37,9 @@
 
                         <span class="flex-1 ml-3 whitespace-nowrap font-inter">Users</span>
                     </a>
-                </li>
+                </li> -->
 
-                <li>
+                <!-- <li>
                     <a href="./index.php?viewofFreelancer=getAllFreelancers"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
@@ -49,10 +49,10 @@
 
                         <span class="flex-1 ml-3 whitespace-nowrap font-inter">Freelancers</span>
                     </a>
-                </li>
+                </li> -->
 
                 <li>
-                    <a href="./index.php?viewofproject=getAllProjects"
+                    <a href="projects.php"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 dark:text-gray-400 transition duration-75 group-hover:text-gray-900 dark:group-hover:text-white" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +63,7 @@
                     </a>
                 </li>
 
-                <li>
+                <!-- <li>
                     <a href="./index.php?viewofCategory=getAllcategories"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
@@ -78,9 +78,9 @@
 
                         <span class="flex-1 ml-3 whitespace-nowrap font-inter">Categories</span>
                     </a>
-                </li>
+                </li> -->
 
-                <li>
+                <!-- <li>
                     <a href="./index.php?viewoftestimonial=createtestimonial"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 
@@ -95,7 +95,7 @@
 
                         <span class="flex-1 ml-3 whitespace-nowrap font-inter">Testimonial</span>
                     </a>
-                </li>
+                </li> -->
 
             </ul>
         </ul>

@@ -15,7 +15,7 @@ switch ($role) {
         require_once "views/dashboard/admin.dashboard.php";
         break;
     case 'customer':
-        require_once "views/dashboard/client.dashboard.php";
+        require_once "views/dashboard/customer.dashboard.php";
         break;
     case 'freelancer':
         require_once "views/dashboard/freelancer.dashboard.php";

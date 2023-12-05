@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+$role = $_SESSION['role'];
+
+if (!isset($_SESSION['role'])) {
+    header('Location: login.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +28,7 @@
 
 <body class="dark:bg-gray-900">
 
-    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <!-- <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start">
@@ -84,9 +94,14 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </nav> -->
 
-    <?php require_once "./views/includes/client.sidebar.php" ?>
+    <?php require_once "views/includes/nav.php" ?>
+
+
+    <?php
+    require_once "./views/includes/".$role.".sidebar.php"
+    ?>
 
     <main class=" mt-14 p-12 ml-0 smXl:ml-64  dark:border-gray-700">
         <div class="cards flex flex-wrap justify-center tablet:justify-between gap-6 mb-12 ">
