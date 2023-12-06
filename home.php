@@ -4,6 +4,14 @@ require_once "model/category_model.php";
 require_once "model/user_model.php";
 
 
+session_start();
+$role = $_SESSION['role'];
+
+if (!isset($_SESSION['role'])) {
+    header('Location: login.php');
+}
+
+
 
 $results =  getHomeCat();
 $users =  getHomeUsers();
@@ -33,7 +41,7 @@ $users =  getHomeUsers();
 
 <body class="dark:bg-gray-900 ">
 
-  <?php require_once "views/includes/header.php" ?>
+  <?php require_once "views/includes/homenav.php" ?>
 
   <section class="hero-section">
     <div class="grid max-w-screen-xl mt-10 px-4 py-8  mx-auto lg:gap-0 xl:gap-0 lg:py-16 lg:grid-cols-12">

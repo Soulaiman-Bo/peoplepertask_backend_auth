@@ -115,6 +115,16 @@ function getAllCat()
     return  $result;
 };
 
+function getAllParentCat()
+{
+    
+    $conn = dbConnect();
+    $sql = "SELECT * FROM `category` WHERE `parent_caregory` IS NULL";
+    $result = $conn->query($sql); 
+    $conn->close();
+    return  $result;
+};
+
 function getHomeCat()
 {
     $conn = dbConnect();

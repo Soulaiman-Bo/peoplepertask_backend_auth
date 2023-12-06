@@ -115,3 +115,13 @@ function updatePR($ID, $title, $description, $tags, $minprice, $maxprice, $hours
     return  $result;
 
 };
+
+
+function searchByCategoryName($category_name){
+    $conn = dbConnect();
+    $sql = "SELECT * FROM `projets` P join `category` C ON P.category_id = C.ID WHERE C.category_name = '$category_name'";
+    $result = $conn->query($sql);
+    $conn->close();
+    return  $result;
+}
+
