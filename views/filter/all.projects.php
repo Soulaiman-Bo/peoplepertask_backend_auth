@@ -534,36 +534,39 @@ $allProject = getAllPR();
 
             project_container.innerHTML = loadingcomponent;
 
+            let result = false
 
-            // fetch('http://peoplepertask_backend_auth.test/search.php')
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         document.getElementById('demo').innerHTML = data.title;
-            //     })
-            //     .catch(error => console.error(error));
+            if (!result) {
+                project_container.innerHTML = "NO RESULT FOUND"
+            } else {
 
-
-            fetchData();
+            }
 
 
         })
 
 
 
+        let exjson = {
+            ID: 'ID',
+            title: 'title',
+            minprice: '10',
+            maxprice: '15',
+            experince: 'advanced',
+            hours: '50',
+            duration: '6',
+            Description: 'project_container.innerHTMLproject_container.innerHTMLproject_container.innerHTMLproject_container.innerHTML',
 
-        async function fetchData() {
-            const data = {
-                message: "Hello from JavaScript!"
-            };
+        }
+
+
+        async function search() {
 
             try {
                 const response = await fetch("http://peoplepertask_backend_auth.test/search.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
+                    method: "GET"
                 });
+
 
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
@@ -571,14 +574,16 @@ $allProject = getAllPR();
 
                 const responseData = await response.json();
 
-                console.log(responseData.message);
+                return responseData
 
             } catch (error) {
                 console.error(error);
             }
         }
 
-        
+        function bindhtmljson() {
+
+        }
     </script>
 </body>
 
