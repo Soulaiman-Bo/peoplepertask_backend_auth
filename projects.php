@@ -7,13 +7,17 @@ if (!isset($_SESSION['role'])) {
 }
 
 
-if ($role == 'admin' || $role == 'customer') {
+if ($role == 'admin' || $role == 'customer' || $role == 'freelancer') {
     if (isset($_GET['action'])) {
         $action = $_GET['action'];
 
         switch ($action) {
+
             case 'createproject':
                 require_once "views/projects/create.project.php";
+                break;
+            case 'showindividualproject':
+                require_once "views/projects/showone.project.php";
                 break;
             case 'updateproject':
                 require_once "views/projects/update.project.php";

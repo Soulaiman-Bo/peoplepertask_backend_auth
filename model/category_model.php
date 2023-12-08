@@ -105,7 +105,6 @@ function getAllCatWithParent()
     return $rows;
 }
 
-
 function getAllCat()
 {
     $conn = dbConnect();
@@ -117,10 +116,10 @@ function getAllCat()
 
 function getAllParentCat()
 {
-    
+
     $conn = dbConnect();
     $sql = "SELECT * FROM `category` WHERE `parent_caregory` IS NULL";
-    $result = $conn->query($sql); 
+    $result = $conn->query($sql);
     $conn->close();
     return  $result;
 };
@@ -168,6 +167,21 @@ function updateCat($ID, $category_name, $parent_caregory)
 
 
     $sql = " UPDATE category SET category_name = '$category_name', parent_caregory = '$parentCategoryId' WHERE ID = $ID";
+    $result = $conn->query($sql);
+    $conn->close();
+    return  $result;
+};
+
+
+
+function createproposal()
+{
+    extract($_POST);
+    $conn = dbConnect();
+
+    $sql = "INSERT INTO `proposals`(`message`, `freelancer_id`, `project_id`) 
+    VALUES ('$message','$freelancerId','$projectID')";
+
     $result = $conn->query($sql);
     $conn->close();
     return  $result;
