@@ -26,7 +26,7 @@ $projectID = $_POST['projectID'];
 // Validate data types and formats as needed (e.g., numeric values, email format)
 // ...
 
-require_once "model/category_model.php";
+require_once "model/proposal_model.php";
 
 $result =  createproposal();
 

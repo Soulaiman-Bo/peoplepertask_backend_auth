@@ -1,16 +1,26 @@
 <?php
-//session_start();
+require_once "model/project_model.php";
+require_once "model/proposal_model.php";
+
+
 $role = $_SESSION['role'];
+$id = $_GET['id'];
+
 
 if (!isset($_SESSION['role'])) {
     header('Location: login.php');
 }
 
+$proposal = false;
 
-$id = $_GET['id'];
+if($_SESSION['role'] == "freelancer"){
+    $freelancerId = $_SESSION['ID'];
+    $proposal = getproposalbyproject($id, $freelancerId);
+}
 
-require_once "model/project_model.php";
+
 $row = getOnePR($id);
+
 
 
 $dateTime = new DateTime($row['created_At']);
@@ -544,6 +554,10 @@ $tags = array_map("trim", $array);
                     <?php if ($_SESSION['role'] == 'freelancer') :  ?>
                         <div class="contact-form article-comment">
                             <h4>Send A proposal</h4>
+
+
+                            <?php if(!$proposal): ?>
+
                             <form id="proposal-form" method="POST">
                                 <input name="freelancerID" type="hidden" value="<?php echo $_SESSION['ID'] ?>" />
                                 <input name="projectID" type="hidden" value="<?php echo $id  ?>" />
@@ -569,13 +583,23 @@ $tags = array_map("trim", $array);
                                 </div>
                             </form>
 
+                            <?php else: ?>
+
+                            <div style="margin-top: 3rem;" class="alert alert-primary" role="alert">
+                                You Already Sent a Proposal! please wait for client to respond
+                            </div>
+
+                            <?php endif; ?>
+
                             <div id="successMsg" style="margin-top: 3rem; display:none;" class="alert alert-success" role="alert">
                                 Sent successfully!
                             </div>
 
                             <div id="errorMsg" style="margin-top: 3rem; display:none;" class="alert alert-danger" role="alert">
-                               Rquest Failed
+                                Rquest Failed
                             </div>
+
+
 
                         </div>
                     <?php endif;  ?>
@@ -738,7 +762,7 @@ $tags = array_map("trim", $array);
         let proposalForm = document.getElementById("proposal-form");
         let alert = document.getElementById("successMsg");
         let erroralert = document.getElementById("errorMsg");
-        
+
 
         proposalForm.addEventListener("submit", (e) => {
 
@@ -766,13 +790,13 @@ $tags = array_map("trim", $array);
                 const response = await fetch("http://peoplepertask_backend_auth.test/proposal.php", {
                     method: "POST",
                     body: formData,
-                   
+
                 });
 
                 if (!response.ok) {
                     erroralert.style.display = 'block'
                     throw new Error(`Error: ${response.status} - ${response.message}`);
-                   
+
                 }
 
                 if (response.ok) {
@@ -782,7 +806,7 @@ $tags = array_map("trim", $array);
 
 
                 const responseData = await response.json();
-                 console.log(responseData.message);
+                console.log(responseData.message);
 
 
             } catch (error) {

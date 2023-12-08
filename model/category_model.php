@@ -173,16 +173,3 @@ function updateCat($ID, $category_name, $parent_caregory)
 };
 
 
-
-function createproposal()
-{
-    extract($_POST);
-    $conn = dbConnect();
-
-    $sql = "INSERT INTO `proposals`(`message`, `freelancer_id`, `project_id`) 
-    VALUES ('$message','$freelancerId','$projectID')";
-
-    $result = $conn->query($sql);
-    $conn->close();
-    return  $result;
-};
