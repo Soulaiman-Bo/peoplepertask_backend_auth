@@ -1,4 +1,11 @@
 <?php
+$role = $_SESSION['role'];
+
+if (!isset($_SESSION['role'])) {
+    header('Location: login.php');
+}
+
+
 
 require_once "model/category_model.php";
 $results = getAllParentCat();
@@ -296,7 +303,7 @@ $allProject = getAllPR();
 
                                         <div id="project_child" class="lg:w-1/4 md:w-1/2 p-4 w-full ring-1 rounded-lg ring-gray-300 dark:ring-gray-700 bg-white dark:bg-gray-900 mt-5">
                                             <h3 class="text-gray-900 font-bold text-lg p-2 lg:p-4 lg:text-xl tracking-widest title-font mb-1 dark:text-white">
-                                                <a href="projectpage.php?project=<?= $project['ID'] ?>"><?= $project['title'] ?></a>
+                                                <a href="projects.php?action=showindividualproject&id=<?= $project['ID'] ?>"><?= $project['title'] ?></a>
                                             </h3>
 
 

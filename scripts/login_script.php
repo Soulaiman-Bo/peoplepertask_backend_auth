@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$email = $_SESSION['email'];
+//$email = $_SESSION['email'];
 //$password = $_SESSION['password'];
 
 // if($email != false){
@@ -51,6 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $fetchedFirstname = $row['firstname'];
             $fetchedLastname = $row['lastname'];
             $fetchedrole = $row['role'];
+            $fetchedID = $row['ID'];
+
+
+           // die($fetchedID) ;
 
             if (password_verify($password, $fetchedpasswrd)) {
 
@@ -58,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['firstname'] = $fetchedLastname;
                 $_SESSION['lastname'] = $fetchedFirstname;
                 $_SESSION['role'] = $fetchedrole;
+                $_SESSION['ID'] = $fetchedID;
 
                 header('location:dashboard.php');
             }

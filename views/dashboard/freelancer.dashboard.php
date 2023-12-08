@@ -89,7 +89,7 @@
     <?php require_once "views/includes/nav.php" ?>
 
 
-    <?php require_once "./views/includes/sideBar.php" ?>
+    <?php require_once "./views/includes/freelancer.sidebar.php" ?>
 
     <main class=" mt-14 p-12 ml-0 smXl:ml-64  dark:border-gray-700">
         <div class="cards flex flex-wrap justify-center tablet:justify-between gap-6 mb-12 ">

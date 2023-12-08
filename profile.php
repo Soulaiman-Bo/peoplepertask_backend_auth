@@ -80,7 +80,7 @@
                                     <li>
                                         <a href=""><i class="fas fa-paper-plane"></i> Hire Me</a>
                                     </li>
-                                    
+
                                 </ul>
                             </div>
                         </div>
