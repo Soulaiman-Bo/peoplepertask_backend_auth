@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+//session_start();
 $role = $_SESSION['role'];
 
 if (!isset($_SESSION['role'])) {
@@ -155,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $id = $_GET['project'];
-    $project = getOnePR($id);
+    $project = getOnePR($id, 'ID');
 
 
     $ID = $project['ID'];

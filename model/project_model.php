@@ -22,12 +22,16 @@
 //     FOREIGN KEY (category_id) REFERENCES category(ID) ON DELETE CASCADE ON UPDATE CASCADE
 // );
 
+use function PHPSTORM_META\type;
+
 require_once "config/dbConnect.php";
 
 
 function createPR()
 {
     extract($_POST);
+
+
     $conn = dbConnect();
 
     //$parentCategoryId;
@@ -44,8 +48,8 @@ function createPR()
 
 
 
-    $sql = "INSERT INTO projets (title, description, tags, minprice, maxprice, hours, duration, experince, country, category_id) 
-    VALUES ('$title', '$description',  '$tags', '$minprice', '$maxprice', '$hours', '$duration', '$experince', '$country', '$category_id')";
+    $sql = "INSERT INTO projets (title, description, user_id, tags, minprice, maxprice, hours, duration, experince, country, category_id) 
+    VALUES ('$title', '$description', '$user_id',  '$tags', '$minprice', '$maxprice', '$hours', '$duration', '$experince', '$country', '$category_id')";
 
     $result = $conn->query($sql);
     $conn->close();
@@ -65,10 +69,10 @@ function getOnePR($id)
 {
     
     $conn = dbConnect();
-
     
+   
 
-    $stmt = $conn->prepare("SELECT  P.title, P.Description, U.firstname, U.lastname, U.email, P.minprice, P.maxprice, P.tags, P.hours, P.duration, P.experince, P.country, C.category_name, P.created_At
+    $stmt = $conn->prepare("SELECT P.ID,  P.title, P.Description, P.category_id, U.firstname, U.lastname, U.email, P.minprice, P.maxprice, P.tags, P.hours, P.duration, P.experince, P.country, C.category_name, P.created_At
     FROM `projets` P
     JOIN `users` U
     ON P.user_id = U.ID
@@ -76,7 +80,9 @@ function getOnePR($id)
     ON P.category_id = C.ID
     WHERE P.ID = ?");
 
-    $stmt->bind_param("i", $id);
+
+
+    $stmt->bind_param('i', $id);
 
     $stmt->execute();
 
@@ -89,7 +95,6 @@ function getOnePR($id)
 
     return $row;
 }
-
 
 function deletePR($ID)
 {
@@ -142,4 +147,30 @@ function searchByCategoryName($category_name)
     $result = $conn->query($sql);
     $conn->close();
     return  $result;
+}
+
+function getownPR($id){
+
+    $conn = dbConnect();
+
+    $stmt = $conn->prepare("SELECT P.ID,  P.title, P.Description, P.category_id, U.firstname, U.lastname, U.email, P.minprice, P.maxprice, P.tags, P.hours, P.duration, P.experince, P.country, C.category_name, P.created_At
+    FROM `projets` P
+    JOIN `users` U
+    ON P.user_id = U.ID
+    JOIN `category` C
+    ON P.category_id = C.ID
+    WHERE P.user_id = ?");
+
+    $stmt->bind_param('i', $id);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    // $row = $result->fetch_assoc();
+
+    $stmt->close();
+    $conn->close();
+
+    return $result;
 }
