@@ -27,7 +27,12 @@ if ($role == 'admin' || $role == 'customer' || $role == 'freelancer') {
                 break;
         }
     } else {
-        require_once "views/projects/show.project.php";
+        if($role == 'customer' ){
+            require_once "views/projects/showown.project.php";
+        }else {
+            require_once "views/projects/show.project.php";
+        }
+       
     }
 } else {
     echo "<h1>you are not Allowed Here</h1>";

@@ -21,7 +21,7 @@ function createproposal()
 function getProposalByProject($id, $freelancerId)
 {
     $conn = dbConnect();
-    
+
     $stmt = $conn->prepare("SELECT * FROM `proposals` WHERE `project_id` = ? AND `freelancer_id` = ?");
     $stmt->bind_param("ii", $id, $freelancerId);
     $stmt->execute();
@@ -33,4 +33,24 @@ function getProposalByProject($id, $freelancerId)
     $row = $result->fetch_assoc();
     $conn->close();
     return $row;
+}
+
+
+function getNumberOfProposals($id)
+{
+    $conn = dbConnect();
+
+    $stmt = $conn->prepare("SELECT  COUNT(1) AS propsals FROM `proposals` WHERE `project_id` = ? ");
+
+    $stmt->bind_param("i", $id);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    
+    $row = $result->fetch_assoc();
+    $conn->close();
+    return $row;
+
+    
 }

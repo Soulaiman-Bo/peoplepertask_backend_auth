@@ -19,7 +19,7 @@ if($_SESSION['role'] == "freelancer"){
 }
 
 
-$row = getOnePR($id);
+$row = getOnePR($id, 'ID');
 
 
 

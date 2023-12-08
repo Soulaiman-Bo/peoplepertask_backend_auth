@@ -1,7 +1,13 @@
 <?php
 
-session_start();
+//session_start();
 $role = $_SESSION['role'];
+
+$idd = $_SESSION['ID'];
+
+echo $idd;
+
+
 
 if (!isset($_SESSION['role'])) {
     header('Location: login.php');
@@ -189,6 +195,8 @@ function test_input($data)
         <div class="h-full ">
             <form action="?action=createproject" method="POST" class="w-3/4 mx-auto bg-white border p-8 rounded-2xl border-b dark:bg-gray-800 dark:border-gray-700">
 
+
+                <input type="hidden" name="user_id" value="<?= $_SESSION['ID'] ?>" />
 
                 <div class="flex flex-col xl:flex-row gap-7 mb-4 ">
                     <div class="mb-5 w-full">
