@@ -63,13 +63,33 @@ function getAllPR()
 
 function getOnePR($id)
 {
+    
     $conn = dbConnect();
-    $sql = "SELECT * FROM projets WHERE ID = $id";
-    $result = $conn->query($sql);
+
+    
+
+    $stmt = $conn->prepare("SELECT  P.title, P.Description, U.firstname, U.lastname, U.email, P.minprice, P.maxprice, P.tags, P.hours, P.duration, P.experince, P.country, C.category_name, P.created_At
+    FROM `projets` P
+    JOIN `users` U
+    ON P.user_id = U.ID
+    JOIN `category` C
+    ON P.category_id = C.ID
+    WHERE P.ID = ?");
+
+    $stmt->bind_param("i", $id);
+
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
     $row = $result->fetch_assoc();
+
+    $stmt->close();
     $conn->close();
-    return  $row;
+
+    return $row;
 }
+
 
 function deletePR($ID)
 {
@@ -78,7 +98,6 @@ function deletePR($ID)
     $result = $conn->query($sql);
     $conn->close();
     return $result;
-
 };
 
 function updatePR($ID, $title, $description, $tags, $minprice, $maxprice, $hours, $duration, $experince, $country, $category)
@@ -113,15 +132,14 @@ function updatePR($ID, $title, $description, $tags, $minprice, $maxprice, $hours
     $conn->close();
 
     return  $result;
-
 };
 
 
-function searchByCategoryName($category_name){
+function searchByCategoryName($category_name)
+{
     $conn = dbConnect();
     $sql = "SELECT * FROM `projets` P join `category` C ON P.category_id = C.ID WHERE C.category_name = '$category_name'";
     $result = $conn->query($sql);
     $conn->close();
     return  $result;
 }
-

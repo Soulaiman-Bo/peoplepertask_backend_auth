@@ -7,7 +7,7 @@ if (!isset($_SESSION['role'])) {
 }
 
 
-if ($role == 'admin' || $role == 'customer') {
+if ($role == 'admin' || $role == 'customer' || $role == 'freelancer') {
     if (isset($_GET['action'])) {
         $action = $_GET['action'];
 
