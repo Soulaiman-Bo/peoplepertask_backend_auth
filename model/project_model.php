@@ -22,7 +22,6 @@
 //     FOREIGN KEY (category_id) REFERENCES category(ID) ON DELETE CASCADE ON UPDATE CASCADE
 // );
 
-use function PHPSTORM_META\type;
 
 require_once "config/dbConnect.php";
 
@@ -34,26 +33,13 @@ function createPR()
 
     $conn = dbConnect();
 
-    //$parentCategoryId;
-
-    // if ($category_name == 'null') {
-    //     $parentCategoryId = null;
-    // } 
-    // else {
-    //     $sql = "SELECT ID FROM category WHERE category_name = '$category_name'";
-    //     $result = $conn->query($sql);
-    //     $row = $result->fetch_assoc();
-    //     $parentCategoryId = $row['ID'];
-    // }
-
-
-
     $sql = "INSERT INTO projets (title, description, user_id, tags, minprice, maxprice, hours, duration, experince, country, category_id) 
     VALUES ('$title', '$description', '$user_id',  '$tags', '$minprice', '$maxprice', '$hours', '$duration', '$experince', '$country', '$category_id')";
 
     $result = $conn->query($sql);
     $conn->close();
     return  $result;
+
 };
 
 function getAllPR()
@@ -70,9 +56,7 @@ function getOnePR($id)
     
     $conn = dbConnect();
     
-   
-
-    $stmt = $conn->prepare("SELECT P.ID,  P.title, P.Description, P.category_id, U.firstname, U.lastname, U.email, P.minprice, P.maxprice, P.tags, P.hours, P.duration, P.experince, P.country, C.category_name, P.created_At
+    $stmt = $conn->prepare("SELECT P.ID, P.title, P.Description, P.category_id, P.user_id,   U.firstname, U.lastname, U.email, P.minprice, P.maxprice, P.tags, P.hours, P.duration, P.experince, P.country, C.category_name, P.created_At
     FROM `projets` P
     JOIN `users` U
     ON P.user_id = U.ID
