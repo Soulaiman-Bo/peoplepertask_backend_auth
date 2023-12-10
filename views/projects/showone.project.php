@@ -13,13 +13,19 @@ if (!isset($_SESSION['role'])) {
 
 $proposal = false;
 
-if($_SESSION['role'] == "freelancer"){
+if ($_SESSION['role'] == "freelancer") {
     $freelancerId = $_SESSION['ID'];
     $proposal = getproposalbyproject($id, $freelancerId);
 }
 
+if ($_SESSION['role'] == 'customer') {
+    $customerId = $_SESSION['ID'];
+    $proposal =  getProposalByProjectID($id);
+}
 
-$row = getOnePR($id, 'ID');
+
+
+$row = getOnePR($id);
 
 
 
@@ -528,6 +534,7 @@ $tags = array_map("trim", $array);
                         <div class="article-img">
                             <img src="https://www.bootdey.com/image/800x350/87CEFA/000000" title alt>
                         </div>
+
                         <div class="article-title">
 
                             <h6><a href="#"><?= $row['category_name'] ?> </a></h6>
@@ -543,11 +550,75 @@ $tags = array_map("trim", $array);
                                 </div>
                             </div>
                         </div>
+
                         <div class="article-content">
                             <p><?= $row['Description'] ?></p>
                         </div>
 
                     </article>
+
+                    <div class=" m-15px-tb blog-aside">
+
+                        <?php if ($_SESSION['ID'] ==  $row['user_id'] &&  $proposal !== false) : ?>
+
+                            <?php foreach ($proposal as $oneProposal) : ?>
+                                <div class="widget widget-author">
+                                    <div class="widget-title">
+                                        <h3>Proposals</h3>
+                                    </div>
+
+                                    <div class="widget-body">
+                                        <div class="media align-items-center">
+                                            <div class="avatar">
+                                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" title alt>
+                                            </div>
+                                            <div class="media-body">
+                                                <h6><?php echo $oneProposal['firstname'] ?> <?= $oneProposal['lastname'] ?></h6>
+                                            </div>
+                                        </div>
+                                        <p><?= $oneProposal['message'] ?></p>
+
+
+
+                                        <?php if ($oneProposal['state'] == 'pending') : ?>
+
+                                            <form id="acceptform" method="POST">
+                                                <input name="proposalId" type="hidden" value='<?php echo $oneProposal['ID']  ?>' />
+                                                <input name="customerId" type="hidden" value="<?php echo $customerId  ?>" />
+                                                <input name="projectId" type="hidden" value="<?php echo $id ?>" />
+                                                <input name="freelancerId" type="hidden" value="<?php echo $$oneProposal['freelancer_id '] ?>" />
+                                                <button id="acceptButton" type="submit" style="margin-top: 3rem;" class="btn btn-primary">Accept This Proposal</button>
+
+                                            </form>
+
+                                        <?php elseif ($oneProposal['state'] == 'approved') : ?>
+                                            <div style="margin-top: 1rem; display:block;" class="alert alert-success" role="alert">
+                                                Accepted.
+                                            </div>
+                                        <?php elseif ($oneProposal['state'] == 'rejected') : ?>
+                                            <div style="margin-top: 1rem; display:block;" class="alert alert-danger" role="alert">
+                                                Rejected
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <div id="acceptesuccessMsg" style="margin-top: 3rem; display:none;" class="alert alert-success" role="alert">
+                                            Accepted successfully!
+                                        </div>
+
+                                        <div id="accepteerrorMsg" style="margin-top: 3rem; display:none;" class="alert alert-danger" role="alert">
+                                            Rquest Failed
+                                        </div>
+
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+
+
+
+
+
+                    </div>
 
 
 
@@ -556,38 +627,36 @@ $tags = array_map("trim", $array);
                             <h4>Send A proposal</h4>
 
 
-                            <?php if(!$proposal): ?>
+                            <?php if (!$proposal) : ?>
 
-                            <form id="proposal-form" method="POST">
-                                <input name="freelancerID" type="hidden" value="<?php echo $_SESSION['ID'] ?>" />
-                                <input name="projectID" type="hidden" value="<?php echo $id  ?>" />
+                                <form id="proposal-form" method="POST">
+                                    <input name="freelancerID" type="hidden" value="<?php echo $_SESSION['ID'] ?>" />
+                                    <input name="projectID" type="hidden" value="<?php echo $id  ?>" />
 
-
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input name="Name" id="name" placeholder="Name *" class="form-control" type="text">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input name="Name" id="name" placeholder="Name *" class="form-control" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <textarea name="message" id="message" placeholder="Your message *" rows="4" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="send">
+                                                <button type="submit" class="px-btn theme"><span>Submit</span> <i class="arrow"></i></button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <textarea name="message" id="message" placeholder="Your message *" rows="4" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="send">
-                                            <button type="submit" class="px-btn theme"><span>Submit</span> <i class="arrow"></i></button>
-                                        </div>
-                                    </div>
+                                </form>
+
+                            <?php else : ?>
+
+                                <div style="margin-top: 3rem;" class="alert alert-primary" role="alert">
+                                    You Already Sent a Proposal! please wait for client to respond
                                 </div>
-                            </form>
-
-                            <?php else: ?>
-
-                            <div style="margin-top: 3rem;" class="alert alert-primary" role="alert">
-                                You Already Sent a Proposal! please wait for client to respond
-                            </div>
 
                             <?php endif; ?>
 
@@ -659,6 +728,16 @@ $tags = array_map("trim", $array);
                                                 <tr class="bg-light">
                                                     <td>Location</td>
                                                     <td class="text-end"><?= $row['country'] ?></td>
+                                                </tr>
+                                                <tr class="bg-light">
+                                                    <?php $number = getNumberOfProposals($row['ID']) ?>
+                                                    <td>Proposals</td>
+                                                    <td class="text-end"><?php echo $number['propsals'] ?></td>
+                                                </tr>
+                                                <tr class="bg-light">
+                                                    <?php $number = getNumberOfProposals($row['ID']) ?>
+                                                    <td>Accepted</td>
+                                                    <td class="text-end">0</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -762,22 +841,51 @@ $tags = array_map("trim", $array);
         let proposalForm = document.getElementById("proposal-form");
         let alert = document.getElementById("successMsg");
         let erroralert = document.getElementById("errorMsg");
+        let acceptforms = document.querySelectorAll("#acceptform");
+        let acceptesuccessMsg = document.getElementById("acceptesuccessMsg");
+        let accepteerrorMsg = document.getElementById("accepteerrorMsg");
+        let acceptButton = document.getElementById("acceptButton");
 
 
-        proposalForm.addEventListener("submit", (e) => {
-
-            e.preventDefault();
-
-            let freelancerId = e.target.freelancerID.value;
-            let projectID = e.target.projectID.value;
-            let name = e.target.name.value;
-            let message = e.target.message.value;
 
 
-            submitData(freelancerId, name, message, projectID)
+        if (proposalForm) {
+            proposalForm.addEventListener("submit", (e) => {
+                e.preventDefault();
 
-        })
+                let freelancerId = e.target.freelancerID.value;
+                let projectID = e.target.projectID.value;
+                let name = e.target.name.value;
+                let message = e.target.message.value;
 
+                submitData(freelancerId, name, message, projectID)
+
+            })
+        }
+
+
+        if (acceptforms) {
+
+
+            acceptforms.forEach((acceptform) => {
+
+                acceptform.addEventListener("submit", (e) => {
+                    e.preventDefault();
+
+                    let proposalId = e.target.proposalId.value;
+                    let customerId = e.target.customerId.value;
+                    let projectId = e.target.projectId.value;
+                    let freelancerId = e.target.freelancerId.value;
+
+                    freelancerId
+
+                    acceptProposal(acceptform, proposalId, customerId, projectId, freelancerId)
+
+                })
+            })
+
+
+        }
 
         async function submitData(freelancerId, name, message, projectID) {
             const formData = new FormData();
@@ -787,7 +895,7 @@ $tags = array_map("trim", $array);
             formData.append("projectID", projectID);
 
             try {
-                const response = await fetch("http://peoplepertask_backend_auth.test/proposal.php", {
+                const response = await fetch("http://peoplepertask_backend_auth.test/proposal.php?action=createproposal", {
                     method: "POST",
                     body: formData,
 
@@ -812,6 +920,44 @@ $tags = array_map("trim", $array);
             } catch (error) {
                 console.error(error);
             }
+        }
+
+        async function acceptProposal(acceptform, proposalId, customerId, projectId, freelancerId) {
+            console.log("fired");
+            const formData = new FormData();
+            formData.append("proposalId", proposalId);
+            formData.append("customerId", customerId);
+            formData.append("projectId", projectId);
+            formData.append("freelancerId", freelancerId);
+
+            try {
+
+                const response = await fetch("http://peoplepertask_backend_auth.test/proposal.php?action=acceptproposal", {
+                    method: "POST",
+                    body: formData,
+
+                });
+
+
+                if (!response.ok) {
+                    accepteerrorMsg.style.display = 'block'
+                    throw new Error(`Error: ${response.status} - ${response.message}`);
+
+                }
+
+                if (response.ok) {
+                    acceptesuccessMsg.style.display = 'block'
+                    acceptform.remove();
+                }
+
+
+                const responseData = await response.json();
+                console.log(responseData.message);
+
+            } catch (error) {
+                console.error(error);
+            }
+
         }
     </script>
 </body>
