@@ -19,10 +19,13 @@ if ($role == 'admin') {
                 require_once "views/skills/update.skills.php";
                 break;
             case 'deleteskill':
-                require_once "views/skills/delete.skills.php";
+                require_once "scripts/delete.skill_script.php";
                 break;
             case 'createskillscript':
                 require_once "scripts/create.skill_script.php";
+                break;
+            case 'updateskillscript':
+                require_once "scripts/update.skill_script.php";
                 break;
         }
     } else {

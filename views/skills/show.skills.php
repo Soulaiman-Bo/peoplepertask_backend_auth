@@ -1,6 +1,6 @@
-<?php 
-    require_once "model/skills_model.php";
-    $result = getAllskill();
+<?php
+require_once "model/skills_model.php";
+$result = getAllskill();
 
 ?>
 -->
@@ -115,16 +115,20 @@
                     <tbody>
 
 
-                        <?php foreach ($result as $row): ?>
-                            <tr class="bg-white dark:bg-gray-800">
+                        <?php foreach ($result as $row) : ?>
+                            <tr id="row_<?= $row["ID"] ?>" class="bg-white dark:bg-gray-800">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <?= $row["name"] ?>
                                 </th>
                                 <td class="px-6 py-4">
-                                    <a href="?action=updatecategory&category=<?= $row["ID"] ?>" class="font-medium font-inter text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    <a href="?action=updateskill&skill=<?= $row["ID"] ?>" class="font-medium font-inter text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <a href="?action=deletecategory&category=<?= $row["ID"] ?>" class="font-medium font-inter text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                                    <form class="deleteskillform">
+                                        <!-- <a href="?action=deleteskill&skill=<?= $row["ID"] ?>" class="font-medium font-inter text-red-600 dark:text-red-500 hover:underline"></a> -->
+                                        <input type="hidden" name="id" value="<?= $row["ID"] ?>" />
+                                        <button class="font-medium font-inter text-red-600 dark:text-red-500 hover:underline">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -141,6 +145,55 @@
 
     <script src="public/js/dashboard.js"></script>
     <script src="public/js/theme.js"></script>
+
+    <script>
+        let deleteskillforms = document.querySelectorAll(".deleteskillform");
+
+
+        deleteskillforms.forEach((deleteskillform) => {
+            deleteskillform.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                let id = e.target.id.value;
+
+                const formData = new FormData();
+                formData.append("ID", id);
+
+                try {
+
+                    const response = await fetch(`http://peoplepertask_backend_auth.test/skills.php?action=deleteskill`, {
+                        method: "POST",
+                        body: formData,
+                    });
+
+
+
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status} - ${response.message}`);
+                    }
+
+                    if (response.ok) {
+                        const responseData = await response.json();
+
+                        if (responseData.message != 'Data received successfully!') {
+                            throw new Error(`Error: ${response.status} - ${response.message}`);
+                        }
+
+                        let row = document.getElementById(`row_${id}`);
+                        row.remove()
+
+                        console.log(responseData.message);
+                    }
+
+                } catch (error) {
+                    console.error(error);
+
+                }
+
+
+            })
+
+        })
+    </script>
 </body>
 
 </html>

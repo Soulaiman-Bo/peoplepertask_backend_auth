@@ -72,7 +72,7 @@ function getOne($id)
     }
 
     // Bind the parameter
-    $stmt->bind_param("i", $id);  // Assuming id is an integer, adjust accordingly if it's another type
+    $stmt->bind_param("i", $id); 
 
     // Execute the query
     $stmt->execute();
