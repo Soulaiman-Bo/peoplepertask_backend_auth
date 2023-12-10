@@ -20,3 +20,12 @@ function createAskill()
 
     return $result;
 }
+
+
+function getAllskill(){
+    $conn = dbConnect();
+    $sql = "SELECT * FROM `skills`";
+    $result = $conn->query($sql);
+    $conn->close();
+    return $result;
+}
